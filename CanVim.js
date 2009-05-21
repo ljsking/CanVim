@@ -43,6 +43,11 @@ function press(evt) {
 			debug = 'keyCode: Alt';
 			break;
 		default:
+			if (evt.shiftKey){
+				keychar = keychar.toUpperCase();
+			}else{
+				keychar = keychar.toLowerCase();
+			}
 			text[currentLine]+=keychar;
 			debug = 'keyCode: '+code;
 			break;
