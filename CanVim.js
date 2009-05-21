@@ -3,6 +3,16 @@ text.push('This is text');
 text.push('isn\' it?');
 var currentLine = 1;
 var debug = ''
+var cusorOn = true;
+function init() {
+	window.setTimeout(timeout,700);
+	draw();
+}
+
+function timeout(){
+	draw()
+	window.setTimeout(timeout,700);
+}
 
 function draw() {
     var canvas = document.getElementById("canvas");
@@ -12,12 +22,21 @@ function draw() {
 		//text.length
 		var x = 5;
 		var y = 10;
+		ctx.font = "10pt Courier";
 		for(var index in text){
 			ctx.fillText(text[index], x, y);
 			y+=15
 		}
+		var dim = ctx.measureText(text[currentLine]);
+		if (cusorOn)
+			drawCursor(ctx, dim.width+5, y);
+		cusorOn = !cusorOn;
 		ctx.fillText(debug, x, y);
     }
+}
+
+function drawCursor(ctx, x, y){
+	ctx.fillRect(x,y-24,6,10);
 }
 
 var KEY = {
