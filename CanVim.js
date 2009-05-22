@@ -6,6 +6,7 @@ var debug = '';
 var cusorOn = true;
 var pos = 8;
 
+var canvasID = 'canvas'
 var style = {
     padding_x: 5,
     padding_y: 10,
@@ -25,7 +26,7 @@ function timeout(){
 }
 
 function draw() {
-    var canvas = document.getElementById("canvas");
+    var canvas = document.getElementById(canvasID);
     if (canvas.getContext) {
         var ctx = canvas.getContext("2d");
 		ctx.clearRect(0, 0, 300, 300);
@@ -59,7 +60,8 @@ var KEY = {
     DOWN: 40,
 	ALT: 91,
 	ESC: 27,
-	ENTER: 13
+	ENTER: 13,
+	TAB: 9,
 };
 
 function press(evt) {
@@ -92,6 +94,14 @@ function press(evt) {
 			currentLine++;
 			pos = 0;
 			debug = 'keyCode: Enter';
+			break;
+		case KEY.TAB:
+			text[currentLine]+='\t';
+			pos++;
+			debug = 'keyCode: TAB';
+			if(evt.preventDefault) {
+				evt.preventDefault();
+			}
 			break;
 		case KEY.ALT:
 			debug = 'keyCode: Alt';
