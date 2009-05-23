@@ -6,43 +6,39 @@ var debug = '';
 var cusorOn = true;
 var pos = 8;
 
-var canvasID = 'canvas'
+var canvasID = '#canvas';
 var style = {
     padding_x: 5,
     padding_y: 10,
 	padding_line: 5,
 	font_height: 10,
 	font: 'Courier',
-}
+};
 
-function init() {
-	window.setTimeout(timeout,700);
-	draw();
-}
+$(document).ready(function () {
+	loop();
+});
 
-function timeout(){
+function loop(){
 	draw()
-	window.setTimeout(timeout,700);
+	window.setTimeout(loop,700);
 }
 
 function draw() {
-    var canvas = document.getElementById(canvasID);
-    if (canvas.getContext) {
-        var ctx = canvas.getContext("2d");
-		ctx.clearRect(0, 0, 300, 300);
-		//text.length
-		var x = style.padding_x;
-		var y = style.padding_y;
-		ctx.font = style.font_height+"pt "+style.font;
-		for(var index in text){
-			ctx.fillText(text[index], x, y);
-			y+=style.font_height+style.padding_line
-		}
-		if (cusorOn)
-			drawCursor(ctx);
-		cusorOn = !cusorOn;
-		ctx.fillText(debug, x, y);
-    }
+	var ctx = $(canvasID)[0].getContext("2d");
+	ctx.clearRect(0, 0, 300, 300);
+	var x = style.padding_x;
+	var y = style.padding_y;
+	ctx.font = style.font_height+"pt "+style.font;
+	for(var index in text){
+		ctx.fillText(text[index], x, y);
+		y+=style.font_height+style.padding_line
+	}
+	if (cusorOn)
+		drawCursor(ctx);
+		
+	cusorOn = !cusorOn;
+	ctx.fillText(debug, x, y);
 }
 
 function drawCursor(ctx){
@@ -64,8 +60,9 @@ var KEY = {
 	TAB: 9,
 };
 
-function press(evt) {
-    var code = evt.keyCode;
+$(document).keydown(function(event){
+	console.log('test')
+	var code = event.keyCode;
 	var keychar = String.fromCharCode(code);
 	switch(code){
 		case KEY.LEFT:
@@ -99,15 +96,13 @@ function press(evt) {
 			text[currentLine]+='\t';
 			pos++;
 			debug = 'keyCode: TAB';
-			if(evt.preventDefault) {
-				evt.preventDefault();
-			}
+			event.preventDefault();
 			break;
 		case KEY.ALT:
 			debug = 'keyCode: Alt';
 			break;
 		default:
-			if (evt.shiftKey){
+			if (event.shiftKey){
 				keychar = keychar.toUpperCase();
 			}else{
 				keychar = keychar.toLowerCase();
@@ -118,4 +113,4 @@ function press(evt) {
 			break;
 	}
     draw();
-}
+});
